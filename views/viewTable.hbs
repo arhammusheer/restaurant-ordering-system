@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="row vh-100 align-items-center justify-content-center">
+    <div
+      class="card shadow border-0 roundness-1 animate__animated animate__slideInUp"
+      style="width: 27rem;"
+    >
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <h4 class="font-weight-bold mb-0">{{name.title}}</h4>
+            <p class="mt-0">{{name.message}}</p>
+          </div>
+        </div>
+        <div class="row justify-content-center"><h2><b>Table Number {{table.number}}</b></h2></div>
+        <div class="row">
+          <img src="{{qrcode}}" style="width: 100%" />
+        </div>
+        <div class="row">
+          <div class="col">
+            <h4>
+              Table Code:
+              <b>
+                {{table._id}}
+              </b>
+            </h4>
+            <h4>
+              Position:
+              <b>
+                {{table.position}}
+              </b>
+            </h4>
+            <h4>
+              Occupancy:
+              <b>
+                {{table.occupancy}}
+              </b>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <button class="btn btn-primary w-50 mb-4" type="button" onclick="this.parentElement.hidden=true;window.print();this.parentElement.hidden=false;">Print</button>
+    <button class="btn btn-danger w-50 mb-4" type="button" onclick="this.hidden=true;document.getElementById(`deleteButton`).hidden=false;">Delete</button>
+    <a class="btn btn-warning w-50 mb-4" id="deleteButton" href="{{deleteURL}}" hidden>Are you Sure?</a>
+  </div>
+  </div>
+</div>

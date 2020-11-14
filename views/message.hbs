@@ -1,15 +1,11 @@
 <div class="container">
   <div class="row vh-100 align-items-center justify-content-center">
     <div class="col">
-      <h1>
-        {{message}}
-      </h1>
       <h2>
-        {{error.status}}
+        {{message.title}}
       </h2>
-      <pre>
-        {{error.stack}}
-      </pre>
+      <p>{{message.description}}</p>
+      <a href="{{message.link}}">{{message.link}}</a>
     </div>
   </div>
 </div>

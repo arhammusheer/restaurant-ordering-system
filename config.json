@@ -1,3 +1,6 @@
 {
-    "name":"Wum"
+    "name":{
+        "title":"The wuu",
+        "message":"Our very own ordering system"
+    }
 }

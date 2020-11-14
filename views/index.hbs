@@ -1,2 +1,49 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<div class="container">
+  <div class="row vh-100 justify-content-center align-items-center">
+    <div class="col">
+      <div
+        class="card shadow border-0 roundness-1 animate__animated animate__slideInDown mb-4"
+      >
+        <div class="card-body">
+          <div class="display-3">
+            {{name.title}}
+          </div>
+          <p>
+            {{name.message}}
+          </p>
+        </div>
+      </div>
+      <div
+        class="card shadow border-0 roundness-1 animate__animated animate__slideInUp"
+      >
+        <div class="card-body">
+          <div class="h3">
+            Enter table code to order
+          </div>
+          <form class="form-inline" method="GET" action="/table">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                name="table_code"
+                id="table_ code"
+                class="form-control"
+                placeholder="Table Code"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                  Go to menu
+                </button>
+              </div>
+            </div>
+          </form>
+          <p>
+            Want an easier way? Just scan the QR code on the table.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <a href="/admin" class="btn btn-primary w-100 m-4">Open Admin Console (Auth not implemented)</a>
+  </div>
+</div>

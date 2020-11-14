@@ -1,8 +1,10 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.roundness-1{
+  border-radius: 1rem !important;
+}
+.roundness-2{
+  border-radius: 2rem !important;
 }

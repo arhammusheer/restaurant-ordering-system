@@ -1,0 +1,68 @@
+<nav class="navbar navbar-light bg-light shadow-sm">
+  <span class="navbar-brand mb-0 h1 font-weight-bold">
+    {{name.title}}
+  </span>
+</nav>
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-8 mb-4">
+      <div
+        class="card shadow border-0 roundness-1 animate__animated animate__slideInUp"
+      >
+        <div class="card-body">
+          <div class="h4 font-weight-bold">
+            Open Orders
+          </div>
+          {{#if orders}}
+          {{else}}
+          <div class="h5 text-secondary">No open orders</div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div
+        class="card shadow border-0 roundness-1 animate__animated animate__slideInRight"
+      >
+        <div class="card-header bg-white border-0">
+          <div class="row justify-content-between m-1">
+            <div class="h4 font-weight-bold">
+              Tables
+            </div>
+            <a href="/admin/table/new" class="btn btn-primary">
+              New Table
+            </a>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            {{#if tables}}
+              {{#each tables}}
+                <a
+                  class="list-group-item list-group-item-action"
+                  href="/admin/table/{{this._id}}"
+                >
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">
+                      {{this._id}}
+                    </h5>
+                    <small>
+                      Occupancy:
+                      {{this.occupancy}}
+                    </small>
+                  </div>
+                  <p class="mb-0">
+                    Position:
+                    {{this.position}}
+                  </p>
+                </a>
+              {{/each}}
+            {{else}}
+              <div class="h5 text-secondary">No tables set</div>
+            {{/if}}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

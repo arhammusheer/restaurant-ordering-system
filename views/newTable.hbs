@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="row vh-100 align-items-center justify-content-center">
+    <div class="col">
+      <div
+        class="card shadow border-0 roundness-1 animate__animated animate__slideInUp"
+      >
+        <div class="card-header bg-white border-0 h4 font-weight-bold">
+          New Table
+        </div>
+        <div class="card-body">
+          <form action="/admin/table/new" method="post">
+            <div class="form-group">
+              <label for="position">
+                Number
+              </label>
+              <input
+                type="number"
+                name="number"
+                id="number"
+                class="form-control"
+                placeholder="Restaurant Assigned table number"
+                aria-describedby="helpId"
+                required
+              />
+              <small id="helpId" class="text-muted">
+                Table Number
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="position">
+                Position
+              </label>
+              <input
+                type="text"
+                name="position"
+                id="position"
+                class="form-control"
+                placeholder="position of table in restaurant"
+                aria-describedby="helpId"
+                required
+              />
+              <small id="helpId" class="text-muted">
+                Position of your table
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="occupancy">
+                Occupancy
+              </label>
+              <input
+                type="number"
+                name="occupancy"
+                id="occupancy"
+                class="form-control"
+                placeholder="Number of occupants of table"
+                aria-describedby="helpId"
+                required
+              />
+              <small id="helpId" class="text-muted">
+                Position of your table
+              </small>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Create
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
