@@ -38,7 +38,7 @@ router.get("/table", (req, res, next) => {
 });
 
 router.get("/table/myorders", async (req, res, next) => {
-	myorders = await OrderSchema.find({
+	var myorders = await OrderSchema.find({
 		tableCode: req.query.table_code,
 		$or: [
 			{ status: "ordered" },
@@ -49,9 +49,14 @@ router.get("/table/myorders", async (req, res, next) => {
 	totalPrice = 0;
 	for (order in myorders) {
 		totalPrice = parseFloat(myorders[order].menuItemId.price) + totalPrice;
-		myorders[order].createdAt = friendlyTime(new Date(`${myorders[order].createdAt}`));
+		console.log(myorders[order].createdAt);
+		myorders[order].createdAt = String(myorders[order].createdAt);
 	}
-	res.render("myOrders", { orders: myorders, tableCode: req.query.table_code, totalPrice: totalPrice });
+	res.render("myOrders", {
+		orders: myorders,
+		tableCode: req.query.table_code,
+		totalPrice: totalPrice,
+	});
 });
 
 router.get("/table/:menu_id", (req, res, next) => {
@@ -104,14 +109,13 @@ router.get("/table/:menu_id/order", async (req, res, next) => {
 router.get("/admin", async (req, res, next) => {
 	_tables = await TableSchema.find({});
 	_orders = await OrderSchema.find({
-		$or: [
-			{ status: "ordered" },
-			{ status: "preparing" },
-		],
+		$or: [{ status: "ordered" }, { status: "preparing" }],
 	});
 	_closedOrders = await OrderSchema.find({
 		status: "delivered",
-	}).sort("-date").limit(10);
+	})
+		.sort("-date")
+		.limit(10);
 	res.render("admin", {
 		name: config.name,
 		tables: _tables,
@@ -258,17 +262,23 @@ router.get("/admin/menu/:menu_id", (req, res, next) => {
 });
 
 router.get("/admin/ordered/:order_id", async (req, res, next) => {
-	await OrderSchema.findByIdAndUpdate(req.params.order_id, { status: "ordered" })
-	res.redirect("/admin")
-})
+	await OrderSchema.findByIdAndUpdate(req.params.order_id, {
+		status: "ordered",
+	});
+	res.redirect("/admin");
+});
 
 router.get("/admin/preparing/:order_id", async (req, res, next) => {
-	await OrderSchema.findByIdAndUpdate(req.params.order_id, { status: "preparing" });
+	await OrderSchema.findByIdAndUpdate(req.params.order_id, {
+		status: "preparing",
+	});
 	res.redirect("/admin");
 });
 
 router.get("/admin/delivered/:order_id", async (req, res, next) => {
-	await OrderSchema.findByIdAndUpdate(req.params.order_id, { status: "delivered" });
+	await OrderSchema.findByIdAndUpdate(req.params.order_id, {
+		status: "delivered",
+	});
 	res.redirect("/admin");
 });
 
