@@ -4,21 +4,17 @@ const config = require("../config.json");
 const TableSchema = require("../models/Table");
 const MenuSchema = require("../models/Menu");
 const QRcode = require("qrcode");
+const OrderSchema = require("../models/Order");
+const friendlyTime = require("friendly-time");
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
 	res.render("index", { name: config.name });
 });
 
-//Admin routes
-router.get("/admin", async (req, res, next) => {
-	_tables = await TableSchema.find({});
-	res.render("admin", { name: config.name, tables: _tables });
-});
-
-//Table Admin
+//Table routes
 router.get("/table", (req, res, next) => {
-	TableSchema.exists({ _id: req.query.table_code }, (err, _table) => {
+	TableSchema.exists({ _id: req.query.table_code }, async (err, _table) => {
 		if (err) res.redirect("/");
 		if (!_table) {
 			return res.render("message", {
@@ -30,11 +26,93 @@ router.get("/table", (req, res, next) => {
 			});
 		}
 		if (_table) {
-			res.render("menu");
+			var _menu = await MenuSchema.find({});
+			res.render("menu", {
+				menu: _menu,
+				path: req.path,
+				tableCode: req.query.table_code,
+				name: config.name,
+			});
 		}
 	});
 });
 
+router.get("/table/myorders", async (req, res, next) => {
+	myorders = await OrderSchema.find({
+		tableCode: req.query.table_code,
+		$or: [
+			{ status: "ordered" },
+			{ status: "preparing" },
+			{ status: "delivered" },
+		],
+	});
+	totalPrice = 0;
+	for (order in myorders) {
+		totalPrice = parseFloat(myorders[order].menuItemId.price) + totalPrice;
+		myorders[order].createdAt = friendlyTime(new Date(`${myorders[order].createdAt}`));
+	}
+	res.render("myOrders", { orders: myorders, tableCode: req.query.table_code, totalPrice: totalPrice });
+});
+
+router.get("/table/:menu_id", (req, res, next) => {
+	MenuSchema.findById(req.params.menu_id, (err, _menu) => {
+		if (err)
+			return res.render("message", {
+				message: {
+					title: "An error occured",
+					description:
+						"We could not get your menu item due to a database error. Please try again.",
+				},
+			});
+		return res.render("viewMenuItem", {
+			menu: _menu,
+			tableCode: req.query.table_code,
+			path: req.path,
+		});
+	});
+});
+
+router.get("/table/:menu_id/order", async (req, res, next) => {
+	_menuItem = await MenuSchema.findById(req.params.menu_id);
+	OrderSchema.create(
+		{
+			tableCode: req.query.table_code,
+			menuItemId: _menuItem,
+			status: "ordered",
+		},
+		(err, _order) => {
+			if (err)
+				return res.render("message", {
+					message: {
+						title: "An error occured",
+						description:
+							"We could not place your order due to a database error. Please try again.",
+					},
+				});
+			return res.render("orderPlaced", {
+				message: {
+					title: "Your Order Has been placed",
+					description: "You will be redirected back to the menu in 1s.",
+				},
+				tableCode: req.query.table_code,
+			});
+		},
+	);
+});
+
+//Admin routes
+router.get("/admin", async (req, res, next) => {
+	_tables = await TableSchema.find({});
+	_orders = await OrderSchema.find({
+		$or: [
+			{ status: "ordered" },
+			{ status: "preparing" },
+		],
+	});
+	res.render("admin", { name: config.name, tables: _tables, orders:_orders });
+});
+
+//Table Admin
 router.get("/admin/table/new", (req, res, next) => {
 	res.render("newTable");
 });
@@ -81,7 +159,7 @@ router.get("/admin/table/:table_code", (req, res, next) => {
 		}
 		var qrCode = undefined;
 		QRcode.toDataURL(
-			`http://${req.headers.host}/table/${_table._id}`,
+			`http://${req.headers.host}/table?table_code=${_table._id}`,
 			{ type: "terminal" },
 			(err, url) => {
 				if (err) console.log(err);
@@ -116,9 +194,14 @@ router.get("/admin/table/:table_code/delete", (req, res, next) => {
 });
 
 //Menu Admin
+router.get("/admin/menu", async (req, res, next) => {
+	menu = await MenuSchema.find({});
+	res.render("viewMenu", { menu: menu, path: req.path });
+});
+
 router.get("/admin/menu/new", (req, res, next) => {
 	res.render("newMenu");
-})
+});
 
 router.post("/admin/menu/new", (req, res, next) => {
 	MenuSchema.create(
@@ -126,6 +209,7 @@ router.post("/admin/menu/new", (req, res, next) => {
 			name: req.body.name,
 			description: req.body.description,
 			price: req.body.price,
+			image: req.body.image,
 		},
 		(err, _menu) => {
 			if (err) {
@@ -146,9 +230,38 @@ router.post("/admin/menu/new", (req, res, next) => {
 					},
 				});
 			}
-			res.redirect("/admin")
+			res.redirect("/admin");
 		},
 	);
+});
+
+router.get("/admin/menu/:menu_id", (req, res, next) => {
+	MenuSchema.findById(req.params.menu_id, (err, _menu) => {
+		if (err)
+			return res.render("message", {
+				message: {
+					title: "An error occured",
+					description:
+						"We could not get your menu item due to a database error. Please try again.",
+				},
+			});
+		return res.render("viewMenuItem", { menu: _menu });
+	});
+});
+
+router.get("/admin/ordered/:order_id", async (req, res, next) => {
+	await OrderSchema.findByIdAndUpdate(req.params.order_id, { status: "ordered" })
+	res.redirect("/admin")
+})
+
+router.get("/admin/preparing/:order_id", async (req, res, next) => {
+	await OrderSchema.findByIdAndUpdate(req.params.order_id, { status: "preparing" });
+	res.redirect("/admin");
+});
+
+router.get("/admin/delivered/:order_id", async (req, res, next) => {
+	await OrderSchema.findByIdAndUpdate(req.params.order_id, { status: "delivered" });
+	res.redirect("/admin");
 });
 
 module.exports = router;

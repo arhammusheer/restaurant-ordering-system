@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">{{name.title}}</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-link" href="/table/myorders?table_code={{tableCode}}">My Orders</a>
+    </div>
+  </div>
+</nav>
+<div class="container mt-4">
+  <h2 class="font-weight-bold mb-0">
+    Menu
+  </h2>
+	<small class="text-secondary">This page is optimized for mobile</small>
+  {{#each menu}}
+    <div class="row">
+      <a href="{{../path}}/{{this._id}}?table_code={{../tableCode}}" class="w-100 text-dark" style="text-decoration: none;">
+        <div
+          class="card shadow border-0 roundness-2 animate__animated animate__slideIn mb-2"
+        >
+          <div class="card-header bg-white border-0">
+            <h2 class="font-weight-bold">
+              {{this.name}}
+            </h2>
+          </div>
+          <div class="card-body">
+            <p>
+              {{this.description}}
+            </p>
+            <h4>
+              Price
+              <b>
+                {{this.price}}
+              </b>
+            </h4>
+          </div>
+        </div>
+      </a>
+    </div>
+  {{/each}}
+</div>

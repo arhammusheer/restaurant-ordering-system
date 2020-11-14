@@ -6,6 +6,7 @@ var MenuSchema = new Schema({
 	name: { type: String, unique: true },
 	description: String,
 	price: String,
+	image: String,
 });
 
 global.MenuSchema = global.MenuSchema || mongoose.model("Menu", MenuSchema);

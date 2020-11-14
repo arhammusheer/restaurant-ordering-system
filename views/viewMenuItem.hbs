@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row vh-100 align-items-center">
+    <div class="col-md-7">
+      <div class="row align-items-center h-100">
+        <div class="col">
+          <h1 class="font-weight-bold">
+            {{menu.name}}
+          </h1>
+          <h5>
+            {{menu.description}}
+          </h5>
+          <h3 class="mt-4">
+            Price
+            <b>
+              {{menu.price}}
+            </b>
+          </h3>
+          {{#if tableCode}}
+          <a href="{{path}}/order?table_code={{tableCode}}" class="btn btn-primary roundness-1 mt-4">Place Order</a>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    {{#if menu.image}}
+      <div class="col-md-5">
+        <div
+          class="card shadow border-0 roundness-2 animate__animated animate__slideInDown animate__slow"
+        >
+          <img src="{{menu.image}}" class="card-img roundness-2" alt="{{menu.name}}" />
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>

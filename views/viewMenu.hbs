@@ -1,0 +1,33 @@
+<div class="container mt-4">
+  <h2 class="font-weight-bold mb-4">
+    Menu
+  </h2>
+  <div class="card-columns">
+    {{#each menu}}
+      <a href="{{../path}}/{{this._id}}">
+        <div class="card shadow border-0 roundness-1">
+          {{#if this.image}}
+            <img
+              src="{{this.image}}"
+              class="card-img-top roundness-1"
+              alt="{{this.name}}-image"
+              style="height: 12rem; object-fit: cover;"
+            />
+          {{/if}}
+          <div class="card-body">
+            <div class="h4 card-title font-weight-bold">
+              {{this.name}}
+            </div>
+            <p class="card-text">
+              {{this.description}}
+            </p>
+            <div class="h5">
+              Price:
+              {{this.price}}
+            </div>
+          </div>
+        </div>
+      </a>
+    {{/each}}
+  </div>
+</div>
