@@ -109,7 +109,15 @@ router.get("/admin", async (req, res, next) => {
 			{ status: "preparing" },
 		],
 	});
-	res.render("admin", { name: config.name, tables: _tables, orders:_orders });
+	_closedOrders = await OrderSchema.find({
+		status: "delivered",
+	}).sort("-date").limit(10);
+	res.render("admin", {
+		name: config.name,
+		tables: _tables,
+		orders: _orders,
+		oldOrders: _closedOrders,
+	});
 });
 
 //Table Admin

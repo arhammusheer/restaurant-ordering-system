@@ -1,3 +1,4 @@
+<meta http-equiv="refresh" content="10" />
 <nav class="navbar navbar-light bg-light shadow-sm">
   <span class="navbar-brand mb-0 h1 font-weight-bold">
     {{name.title}}
@@ -6,7 +7,7 @@
 <div class="container-fluid mt-4">
   <div class="row">
     <div class="col-md-8 mb-4">
-      <div class="card shadow border-0 roundness-1">
+      <div class="card shadow border-0 roundness-1 mb-4">
         <div class="card-body">
           <div class="h4 font-weight-bold">
             Open Orders
@@ -21,7 +22,9 @@
                     </h5>
                     <p>
                       Table Code:
-                      {{this.tableCode}}
+                      <b>
+                        {{this.tableCode}}
+                      </b>
                     </p>
                     <small>
                       Current status:
@@ -32,13 +35,22 @@
                       Update Status
                     </small>
                     <div class="btn-group w-100">
-                      <a href="/admin/ordered/{{this._id}}" class="btn btn-sm btn-primary">
+                      <a
+                        href="/admin/ordered/{{this._id}}"
+                        class="btn btn-sm btn-primary"
+                      >
                         Ordered
                       </a>
-                      <a href="/admin/preparing/{{this._id}}" class="btn btn-sm btn-warning">
+                      <a
+                        href="/admin/preparing/{{this._id}}"
+                        class="btn btn-sm btn-warning"
+                      >
                         Preparing
                       </a>
-                      <a href="/admin/delivered/{{this._id}}" class="btn btn-sm btn-danger">
+                      <a
+                        href="/admin/delivered/{{this._id}}"
+                        class="btn btn-sm btn-danger"
+                      >
                         Delivered
                       </a>
                     </div>
@@ -53,6 +65,48 @@
           {{/if}}
         </div>
       </div>
+      {{#if oldOrders}}
+        <div class="card shadow border-0 roundness-1">
+          <div class="card-body">
+            <h4 class="font-weight-bold">
+              Recently closed orders
+            </h4>
+            <div class="card-columns">
+              {{#each oldOrders}}
+                <div class="card shadow border-0 roundness-1">
+                  <div class="card-body">
+                    <h5>
+                      {{this.menuItemId.name}}
+                    </h5>
+                    <p>
+                      Table Code:
+                      <b>
+                        {{this.tableCode}}
+                      </b>
+                    </p>
+                    <small>
+                      Current status:
+                      {{this.status}}
+                    </small>
+                    <br />
+                    <small>
+                      Update Status
+                    </small>
+                    <div class="btn-group w-100">
+                      <a
+                        href="/admin/preparing/{{this._id}}"
+                        class="btn btn-sm btn-warning"
+                      >
+                        Reopen
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      {{/if}}
     </div>
     <div class="col-md-4">
       <div class="card shadow border-0 roundness-1 mb-4">
