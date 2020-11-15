@@ -9,55 +9,67 @@
     <div class="col-md-8 mb-4">
       <div class="card shadow border-0 roundness-1 mb-4">
         <div class="card-body">
-          <div class="h4 font-weight-bold">
+          <div class="h3 font-weight-bold">
             Open Orders
           </div>
           {{#if orders}}
-            <div class="card-columns">
-              {{#each orders}}
-                <div class="card shadow border-0 roundness-1">
-                  <div class="card-body">
-                    <h5>
-                      {{this.menuItemId.name}}
-                    </h5>
-                    <p>
-                      Table Code:
-                      <b>
-                        {{this.tableCode}}
-                      </b>
-                    </p>
-                    <small>
-                      Current status:
-                      <b>{{this.status}}</b>
-                    </small>
-                    <br />
-                    <small>
-                      Update Status
-                    </small>
-                    <div class="btn-group w-100">
-                      <a
-                        href="/admin/ordered/{{this._id}}"
-                        class="btn btn-sm btn-primary"
-                      >
-                        Ordered
-                      </a>
-                      <a
-                        href="/admin/preparing/{{this._id}}"
-                        class="btn btn-sm btn-warning"
-                      >
-                        Preparing
-                      </a>
-                      <a
-                        href="/admin/delivered/{{this._id}}"
-                        class="btn btn-sm btn-danger"
-                      >
-                        Delivered
-                      </a>
+            {{#each orders}}
+              <div class="row mx-2">
+                <h4>
+                  Table
+                  <b>
+                    {{@key}}
+                  </b>
+                </h4>
+              </div>
+              <div class="card-columns">
+                {{#each this}}
+                  <div class="card shadow-sm border-0 roundness-1">
+                    <div class="card-body">
+                      <h5>
+                        {{this.menuItemId.name}}
+                      </h5>
+                      <p>
+                        Table Code:
+                        <b>
+                          {{this.tableCode}}
+                        </b>
+                      </p>
+                      <small>
+                        Current status:
+                        <b>
+                          {{this.status}}
+                        </b>
+                      </small>
+                      <br />
+                      <small>
+                        Update Status
+                      </small>
+                      <div class="btn-group w-100">
+                        <a
+                          href="/admin/ordered/{{this._id}}"
+                          class="btn btn-sm btn-primary"
+                        >
+                          Ordered
+                        </a>
+                        <a
+                          href="/admin/preparing/{{this._id}}"
+                          class="btn btn-sm btn-warning"
+                        >
+                          Preparing
+                        </a>
+                        <a
+                          href="/admin/delivered/{{this._id}}"
+                          class="btn btn-sm btn-danger"
+                        >
+                          Delivered
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              {{/each}}
-            </div>
+                {{/each}}
+              </div>
+            {{/each}}
           {{else}}
             <div class="h5 text-secondary">
               No open orders
@@ -71,39 +83,51 @@
             <h4 class="font-weight-bold">
               Recently closed orders
             </h4>
-            <div class="card-columns">
-              {{#each oldOrders}}
-                <div class="card shadow border-0 roundness-1">
-                  <div class="card-body">
-                    <h5>
-                      {{this.menuItemId.name}}
-                    </h5>
-                    <p>
-                      Table Code:
-                      <b>
-                        {{this.tableCode}}
-                      </b>
-                    </p>
-                    <small>
-                      Current status:
-                      <b>{{this.status}}</b>
-                    </small>
-                    <br />
-                    <small>
-                      Update Status
-                    </small>
-                    <div class="btn-group w-100">
-                      <a
-                        href="/admin/preparing/{{this._id}}"
-                        class="btn btn-sm btn-warning"
-                      >
-                        Reopen
-                      </a>
+            {{#each oldOrders}}
+              <div class="row mx-2 mt-4">
+                <h4>
+                  Table
+                  <b>
+                    {{@key}}
+                  </b>
+                </h4>
+              </div>
+              <div class="card-columns">
+                {{#each this}}
+                  <div class="card shadow-sm border-0 roundness-1">
+                    <div class="card-body">
+                      <h5>
+                        {{this.menuItemId.name}}
+                      </h5>
+                      <p>
+                        Table Code:
+                        <b>
+                          {{this.tableCode}}
+                        </b>
+                      </p>
+                      <small>
+                        Current status:
+                        <b>
+                          {{this.status}}
+                        </b>
+                      </small>
+                      <br />
+                      <small>
+                        Update Status
+                      </small>
+                      <div class="btn-group w-100">
+                        <a
+                          href="/admin/preparing/{{this._id}}"
+                          class="btn btn-sm btn-warning"
+                        >
+                          Reopen
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              {{/each}}
-            </div>
+                {{/each}}
+              </div>
+            {{/each}}
           </div>
         </div>
       {{/if}}
@@ -166,7 +190,9 @@
       </div>
       <div class="card shadow border-0 roundness-1 mb-4">
         <div class="card-body">
-          <h3 class="font-weight-bold">Open Tables</h3>
+          <h3 class="font-weight-bold">
+            Open Tables
+          </h3>
         </div>
       </div>
     </div>

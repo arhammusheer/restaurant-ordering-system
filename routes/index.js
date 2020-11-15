@@ -116,11 +116,22 @@ router.get("/admin", async (req, res, next) => {
 	})
 		.sort("-date")
 		.limit(10);
+	var sorted_orders = {};
+	for (_order of _orders) {
+		if (!sorted_orders[_order.tableCode]) sorted_orders[_order.tableCode] = [];
+		sorted_orders[_order.tableCode].push(_order);
+	}
+	var sorted_closed_orders = {};
+	for (_order of _closedOrders) {
+		if (!sorted_closed_orders[_order.tableCode])
+			sorted_closed_orders[_order.tableCode] = [];
+		sorted_closed_orders[_order.tableCode].push(_order);
+	}
 	res.render("admin", {
 		name: config.name,
 		tables: _tables,
-		orders: _orders,
-		oldOrders: _closedOrders,
+		orders: sorted_orders,
+		oldOrders: sorted_closed_orders,
 	});
 });
 
@@ -288,6 +299,61 @@ router.get("/admin/menu/:menu_id/edit", (req, res, next) => {
 			});
 		}
 		return res.render("editMenuItem", { menu: _menu });
+	});
+});
+
+router.post("/admin/menu/:menu_id/edit", (req, res, next) => {
+	MenuSchema.findById(req.params.menu_id, (err, _menu) => {
+		if (err)
+			return res.render("message", {
+				message: {
+					title: "An error occured",
+					description:
+						"We could not update your menu item due to a database error. Please try again.",
+				},
+			});
+		if (!_menu) {
+			return res.render("message", {
+				message: {
+					title: "Menu Item Does not Exist",
+					description: "The menu item you are looking for does not exist.",
+				},
+			});
+		}
+		_menu.name = req.body.name;
+		_menu.price = req.body.price;
+		_menu.description = req.body.description;
+		_menu.image = req.body.image;
+		_menu.save();
+		return res.render("message", {
+			message: {
+				title: `Menu item ${_menu.name} has been edited successfully`,
+				description:
+					"The menu item has been updated successfully. Pleas do not refresh this page, you will be redirected automatically.",
+			},
+			redirect: { time: 2, url: "/admin" },
+		});
+	});
+});
+
+router.get("/admin/menu/:menu_id/delete", (req, res, next) => {
+	MenuSchema.findByIdAndDelete(req.params.menu_id, (err, _menu) => {
+		if (err)
+			return res.render("message", {
+				message: {
+					title: "An error occured",
+					description:
+						"We could not delete your menu item due to a database error. Please try again.",
+				},
+			});
+
+		return res.render("message", {
+			message: {
+				title: `Menu Item ${_menu.name} successfully deleted`,
+				description:
+					"Your menu item has been deleted successfully. This is an irreversable task.",
+			},
+		});
 	});
 });
 
