@@ -4,7 +4,7 @@
   </h2>
   <div class="card-columns">
     {{#each menu}}
-      <a href="{{../path}}/{{this._id}}">
+      <a href="{{../path}}/{{this._id}}" class="text-dark" style="text-decoration: none;">
         <div class="card shadow border-0 roundness-1">
           {{#if this.image}}
             <img
@@ -25,6 +25,9 @@
               Price:
               {{this.price}}
             </div>
+
+            <br>
+            <a href="/admin/menu/{{this._id}}/edit" class="btn btn-primary btn-sm">Edit</a>
           </div>
         </div>
       </a>

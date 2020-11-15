@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="row vh-100 align-items-center justify-content-center">
+    <div class="col">
+      <div
+        class="card shadow border-0 roundness-1 animate__animated animate__slideInUp"
+      >
+        <div class="card-header bg-white border-0 h4 font-weight-bold">
+          Edit {{menu.name}}
+        </div>
+        <div class="card-body">
+          <form action="/admin/menu/new" method="post">
+            <div class="form-group">
+              <label for="name">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                class="form-control"
+                value="{{menu.name}}"
+                placeholder="Name of menu item"
+                aria-describedby="helpId"
+                required
+              />
+              <small id="helpId" class="text-muted">
+                Name of item you're adding
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="description">
+                Description
+              </label>
+              <input
+                type="text"
+                name="description"
+                id="description"
+                value="{{menu.description}}"
+                class="form-control"
+                placeholder="Description of menu item"
+                aria-describedby="helpId"
+              />
+              <small id="helpId" class="text-muted">
+                Description of item you're adding (Optional)
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="price">
+                Price
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                name="price"
+                id="price"
+                value="{{menu.price}} "
+                class="form-control"
+                placeholder="Price per item"
+                aria-describedby="helpId"
+                required
+              />
+              <small id="helpId" class="text-muted">
+                price of the item
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="price">
+                Image URL
+              </label>
+              <input
+                type="url"
+                name="image"
+                id="image"
+                value="{{menu.image}}"
+                class="form-control"
+                placeholder="Image URL (Ex. https://example.com/image.jpg)"
+                aria-describedby="helpId"
+              />
+              <small id="helpId" class="text-muted">
+                Image url (Optional)
+              </small>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Edit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

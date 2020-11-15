@@ -257,7 +257,37 @@ router.get("/admin/menu/:menu_id", (req, res, next) => {
 						"We could not get your menu item due to a database error. Please try again.",
 				},
 			});
+		if (!_menu) {
+			return res.render("message", {
+				message: {
+					title: "Menu Item Does not Exist",
+					description: "The menu item you are looking for does not exist.",
+				},
+			});
+		}
 		return res.render("viewMenuItem", { menu: _menu });
+	});
+});
+
+router.get("/admin/menu/:menu_id/edit", (req, res, next) => {
+	MenuSchema.findById(req.params.menu_id, (err, _menu) => {
+		if (err)
+			return res.render("message", {
+				message: {
+					title: "An error occured",
+					description:
+						"We could not get your menu item due to a database error. Please try again.",
+				},
+			});
+		if (!_menu) {
+			return res.render("message", {
+				message: {
+					title: "Menu Item Does not Exist",
+					description: "The menu item you are looking for does not exist.",
+				},
+			});
+		}
+		return res.render("editMenuItem", { menu: _menu });
 	});
 });
 
