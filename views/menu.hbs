@@ -14,18 +14,19 @@
     Menu
   </h2>
 	<small class="text-secondary">This page is optimized for mobile</small>
+	<div class="card-columns mt-4">
   {{#each menu}}
-    <div class="row">
       <a href="{{../path}}/{{this._id}}?table_code={{../tableCode}}" class="w-100 text-dark" style="text-decoration: none;">
         <div
           class="card shadow border-0 roundness-2 animate__animated animate__slideIn mb-2"
         >
-          <div class="card-header bg-white border-0">
+					{{#if this.image}}
+						<img src="{{this.image}}" class="card-img-top roundness-1" alt="{{this.name}}-image" style="max-height:10rem; object-fit: cover;" />
+					{{/if}}
+          <div class="card-body">
             <h2 class="font-weight-bold">
               {{this.name}}
             </h2>
-          </div>
-          <div class="card-body">
             <p>
               {{this.description}}
             </p>
@@ -38,6 +39,6 @@
           </div>
         </div>
       </a>
-    </div>
   {{/each}}
+	</div>
 </div>
