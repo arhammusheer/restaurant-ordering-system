@@ -15,6 +15,7 @@ var TableSchema = new Schema({
 	number: String,
 	position: String,
 	occupancy: String,
+	billRequested: { type: Boolean, default: false },
 });
 
 global.TableSchema = global.TableSchema || mongoose.model("Table", TableSchema);

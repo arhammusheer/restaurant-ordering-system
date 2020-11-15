@@ -1,0 +1,80 @@
+<div class="container mt-4">
+  <h2 class="mb-4">
+    Bill for
+    {{table_code}}
+  </h2>
+  {{#if orders}}
+    <div
+      class="card shadow border-0 roundness-1 animate__animated animate__slideInDown mb-4"
+    >
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          {{#each orders}}
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              <div class="h4">
+                {{this.menuItemId.name}}
+              </div>
+              <div class="h3 font-weight-bold">
+                {{this.menuItemId.price}}
+              </div>
+            </li>
+          {{/each}}
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <div class="h4">
+              Total
+            </div>
+            <div class="h3 font-weight-bold">
+              {{totalPrice}}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      class="card shadow border-0 roundness-1 animate__animated animate__slideInDown mb-4"
+    >
+      <div class="card-body">
+        <form action="/admin/bill/{{table_code}}" method="post">
+          <div class="form-group">
+            <label for="Payment Method">
+              Payment Method
+            </label>
+            <select
+              name="payment_method"
+              class="form-control"
+              id="payment_method"
+            >
+              <option value="cash">
+                Cash
+              </option>
+              <option value="credit card">
+                Credit Card
+              </option>
+              <option value="debit card">
+                Debit Card
+              </option>
+              <option value="mobile payment">
+                Mobile Payments (Google Pay,Apple Pay etc)
+              </option>
+              <option value="other">
+                Other
+              </option>
+            </select>
+            <small id="helpId" class="text-muted">
+              Payment method
+            </small>
+          </div>
+					<button type="submit" class="btn btn-primary roundness-1">Close Bill</button>
+        </form>
+      </div>
+    </div>
+  {{else}}
+    <h2>
+      No Orders yet
+    </h2>
+  {{/if}}
+</div>

@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <div
+    class="card shadow border-0 roundness-1 animate__animated animate__slideInDown mb-4"
+  >
+    <div class="card-body">
+      <h5>
+        Table Code
+        <b>
+          {{bill.tableCode}}
+        </b>
+      </h5>
+      <small>
+        Billing ID
+        {{bill._id}}
+      </small>
+      <h2 class="mt-4">
+        Total Amount
+        <b>
+          {{bill.totalAmount}}
+        </b>
+      </h2>
+      <h5>
+        Payment method:
+        <b>
+          {{bill.paymentMethod}}
+        </b>
+      </h5>
+    </div>
+  </div>
+  <div
+    class="card shadow border-0 roundness-1 animate__animated animate__slideInDown mb-4"
+  >
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        {{#each bill.Order}}
+          <li class="list-group-item">
+            <div class="row justify-content-between align-items-center">
+                <h5>{{this.menuItemId.name}}</h5>
+                <h4 class="font-weight-bold">{{this.menuItemId.price}}</h4>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</div>

@@ -5,7 +5,7 @@ const TableSchema = require("../models/Table");
 const MenuSchema = require("../models/Menu");
 const QRcode = require("qrcode");
 const OrderSchema = require("../models/Order");
-const friendlyTime = require("friendly-time");
+const BillSchema = require("../models/Bill");
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
@@ -49,7 +49,6 @@ router.get("/table/myorders", async (req, res, next) => {
 	totalPrice = 0;
 	for (order in myorders) {
 		totalPrice = parseFloat(myorders[order].menuItemId.price) + totalPrice;
-		console.log(myorders[order].createdAt);
 		myorders[order].createdAt = String(myorders[order].createdAt);
 	}
 	res.render("myOrders", {
@@ -378,4 +377,86 @@ router.get("/admin/delivered/:order_id", async (req, res, next) => {
 	res.redirect("/admin");
 });
 
+router.get("/admin/bill/:table_code", async (req, res, next) => {
+	await OrderSchema.find(
+		{
+			tableCode: req.params.table_code,
+			billed: false,
+		},
+		(err, _orders) => {
+			var totalPrice = 0;
+			for (order in _orders) {
+				totalPrice = parseFloat(_orders[order].menuItemId.price) + totalPrice;
+			}
+			totalPrice = Math.round(totalPrice * 100) / 100;
+			res.render("bill", {
+				orders: _orders,
+				table_code: req.params.table_code,
+				totalPrice: totalPrice,
+			});
+		},
+	);
+});
+
+router.post("/admin/bill/:table_code", async (req, res, next) => {
+	var totalPrice = 0;
+	var orders = [];
+	await OrderSchema.find(
+		{
+			tableCode: req.params.table_code,
+			billed: false,
+		},
+		(err, _orders) => {
+			for (order in _orders) {
+				totalPrice = parseFloat(_orders[order].menuItemId.price) + totalPrice;
+				_orders[order].billed = true;
+				_orders[order].status = "billed";
+			}
+			orders = _orders;
+			totalPrice = Math.round(totalPrice * 100) / 100;
+		},
+	);
+	await OrderSchema.updateMany(
+		{
+			tableCode: req.params.table_code,
+			billed: false,
+		},
+		{
+			status: "billed",
+			billed: true,
+		},
+	);
+	await BillSchema.create(
+		{
+			tableCode: req.params.table_code,
+			totalAmount: totalPrice,
+			Order: orders,
+			paymentMethod: req.body.payment_method,
+		},
+		(err, _bill) => {
+			if (err)
+				return res.render("message", {
+					message: {
+						title: "An error occured",
+						description:
+							"We could not generate your bill due to a database error. Please try again.",
+					},
+				});
+			return res.redirect(`/admin/closed-bill/${_bill._id}`);
+		},
+	);
+});
+router.get("/admin/closed-bill/:bill_id", (req, res, next) => {
+	BillSchema.findById(req.params.bill_id, (err, _bill) => {
+		if (err)
+			return res.render("message", {
+				message: {
+					title: "An error occured",
+					description:
+						"We could load your bill due to a database error. Please try again.",
+				},
+			});
+		res.render("closedBill", { bill: _bill });
+	});
+});
 module.exports = router;

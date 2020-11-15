@@ -14,6 +14,7 @@ var OrderSchema = new Schema(
 		tableCode: String,
 		menuItemId: MenuSchema,
 		status: String,
+		billed: { type: Boolean, default: false },
 	},
 	{ timestamps: true },
 );
